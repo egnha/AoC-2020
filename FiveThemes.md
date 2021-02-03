@@ -949,6 +949,6 @@ assert "xgtj,ztdctgq,bdnrnx,cdvjp,jdggtft,mdbq,rmd,lgllb" == canonicaldangerous
 <a id='license'></a>
 ## License
 
-Copyright 2021 Eugene Ha
+© 2021 Eugene Ha
 
 The code is made available under the [MIT License](https://opensource.org/licenses/MIT); all other content is made available under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
