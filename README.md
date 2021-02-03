@@ -5,6 +5,8 @@ This repository contains my solutions of the twenty-five days of [Eric Wastl](ht
 Additionally, I’ve written a commentary on nine of the neatest puzzles: 
 *[Five Themes from the Advent of Code 2020](https://github.com/egnha/AoC-2020/blob/main/FiveThemes.md)*.
 
+*Kudos and hearty thanks to Eric Wastl for creating such a fun and educational diversion!*
+
 ## License
 
 © 2021 Eugene Ha
