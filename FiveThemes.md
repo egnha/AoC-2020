@@ -52,7 +52,7 @@ Matrix = NewType("Matrix", np.ndarray)  # implicitly 2D
 
 The key observation is that **bag-containment counts are linearly related.**
 
-For example, consider the containment rule `blue bags contain 4 green bags, 2 red bag, 5 yellow bags`. We can transcribe the corresponding condition for the containment *count* — the number of bags contained by a blue bag — as a purely symbolic equation:
+For example, consider the containment rule `blue bags contain 4 green bags, 2 red bag, 5 yellow bags`. We can transcribe the corresponding condition for the containment *count* — the number of bags contained by a blue bag — as a *purely symbolic* equation:
 
 ```
 N_blue = 4⋅(𝟙_green + N_green) + 2⋅(𝟙_red + N_red) + 5⋅(𝟙_yellow + N_yellow)
@@ -98,13 +98,11 @@ This is in fact a *finite* sum if sufficiently high powers of `C` are zero (whic
 ```python
 from scipy.sparse import csr_matrix
 
-nonzero = csr_matrix.count_nonzero
-
 def geomseries(x: Matrix) -> Matrix:
     """Geometric series starting from x (presuming it's nilpotent and sparse)."""
     x = csr_matrix(x)
     pows = it.accumulate(it.repeat(x), op.matmul, initial=x)
-    return np.sum(list(it.takewhile(nonzero, pows)), axis=0)
+    return np.sum(list(it.takewhile(csr_matrix.count_nonzero, pows)), axis=0)
 ```
 
 Our matrix `C` is indeed nilpotent (why?), so we can now solve **Part 2**. The number of bags inside a shiny gold bag is **`13264`**.
@@ -142,12 +140,12 @@ Here’s a function that performs recursive substitution:
 
 
 ```python
-arithop = {np.dtype(bool): (op.or_, op.and_), # Part 1
-           np.dtype(int):  (op.add, op.mul)}  # Part 2
+arithmetic = {np.dtype(bool): (op.or_, op.and_), # Part 1
+              np.dtype(int):  (op.add, op.mul)}  # Part 2
 
 def substitute(C: Matrix, i: int) -> Vector:
     """Recursively substitute bag-containment-count equations."""
-    add, mul = arithop[C.dtype]
+    add, mul = arithmetic[C.dtype]
     sum = lambda xs: np.sum(list(xs), axis=0, dtype=C.dtype)
     def subst(N):
         if (N == 0).all():
