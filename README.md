@@ -7,6 +7,16 @@ Additionally, I’ve written a commentary on nine of the neatest puzzles:
 
 *Kudos and hearty thanks to Eric Wastl for creating such a fun and educational diversion!*
 
+## Reproducing the Python environment
+
+Install [Conda](https://docs.conda.io/projects/conda/en/latest/) and invoke the following command:
+
+```sh
+conda env create --file environment.yml
+```
+
+This creates a conda environment named `aoc2020`, which includes [Jupyter Lab](https://jupyter.org).
+
 ## License
 
 © 2021 Eugene Ha

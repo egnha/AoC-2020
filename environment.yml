@@ -1,0 +1,10 @@
+name: aoc2020
+channels:
+  - defaults
+dependencies:
+  - numpy
+  - sympy
+  - numba
+  - python=3.8
+  - scipy
+  - jupyterlab
