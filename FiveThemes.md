@@ -12,15 +12,15 @@ This is a commentary on nine days from the [`Advent of Code 2020`](https://adven
   * [Theme 4](#theme4). Poor man’s interpreter (Days [14](#day14) and [18](#day18))
   * [Theme 5](#theme5). Resolving ambiguous relations with matrices (Days [16](#day16) and [21](#day21))
   
-Solutions to the remaining sixteen days can be found in the [solutions folder](https://github.com/egnha/AoC-2020/tree/main/solutions). They are comparatively routine (with the exception of [Day 20](https://github.com/egnha/AoC-2020/blob/main/solutions/20.ipynb), which entails rather careful bookkeeping). I’ve omitted them here because five is an auspicious number, and frankly, I lacked the imagination or inspiration (not to mention the energy) to say anything noteworthy about them.
+Solutions to the remaining sixteen days can be found in the [solutions folder](https://github.com/egnha/AoC-2020/tree/main/solutions). They are comparatively routine (with the exception of Day [20](https://github.com/egnha/AoC-2020/blob/main/solutions/20.ipynb), which entails rather careful bookkeeping). I’ve omitted them here because five is an auspicious number, and frankly, I lacked the imagination or inspiration (not to mention the energy) to say anything noteworthy about them.
 
 All solutions are in Python, with liberal use of [NumPy](https://numpy.org) and [array-oriented methods](https://en.wikipedia.org/wiki/Array_programming). I favour a functional style, but write procedural or imperative code when that makes more sense. There is scarcely any object orientation, except as a means of overriding ordinary Python semantics ([Theme 4](#theme4)).
 
-Hearty thanks to [Eric Wastl](http://www.was.tl) for creating such a fun and educational diversion!
+*Hearty thanks to [Eric Wastl](http://www.was.tl) for creating such a fun and educational diversion!*
 
 #### Dependencies
 
-[Python 3.8](https://docs.python.org/3.8/) (or higher) and [NumPy](https://numpy.org) are required. [SciPy](https://www.scipy.org/scipylib/) and [Numba](https://numba.pydata.org) are each used once for speed-ups ([Day 7](#day7), resp. [Day 11](#day11)).
+[Python 3.8](https://docs.python.org/3.8/) (or higher) and [NumPy](https://numpy.org) are required. [SciPy](https://www.scipy.org/scipylib/) and [Numba](https://numba.pydata.org) are each used once for speed-ups (Days [7](#day7) and [11](#day11)).
 
 
 ```python
@@ -544,7 +544,7 @@ Imagine for a moment that the tiles are situated on a *regular* hexagonal grid i
 (-1) + (-1) + (-z) + 1 + z + (z - 1) = z - 2
 ```
 
-In fact, whether the lattice is regular or skewed is irrelevant, because we only want to *tally* the times a grid point is reached by a path. To this end, only the *linear independence* of `1` and `z` over the real numbers matters. We might as well choose `z = √-1`. (From a planar perspective, the hexagonal grid becomes skewed.)
+In fact, whether the lattice is regular or skewed is immaterial, because we only care about *tallying* the number of times a grid point is reached by a path. Consequently, the *linear independence* of `1` and `z` (over the integers) is the only thing that matters here. We might as well set `z` to `√-1` instead of `exp(√-1⋅π/3)`. (From a planar perspective, the hexagonal grid becomes skewed.)
 
 
 ```python
