@@ -1,5 +1,7 @@
 # Advent of Code 2020 🎄
 
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/egnha/AoC-2020/HEAD?urlpath=lab/tree/FiveThemes.ipynb)
+
 This repository contains my solutions of the twenty-five days of [Eric Wastl](http://www.was.tl)’s [Advent of Code 2020](https://adventofcode.com/2020). The solutions are in Python (3.8+), with liberal use of [NumPy](https://numpy.org) and [array-oriented methods](https://en.wikipedia.org/wiki/Array_programming).
 
 Additionally, I’ve written a commentary on nine of the neatest puzzles: 
