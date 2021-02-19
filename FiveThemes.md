@@ -631,73 +631,73 @@ The additional code transformation
 mask = …  ⤳  mem.mask = …
 ```
 
-enables the **second step**: reinterpreting mask assignment and memory value assignment so that bitmasking intervenes. Since we have lines like `mem.mask = …` and `mem[…] = …` in the code, it is natural to endow `mem` with these capabilities by making it an instance of an ad hoc class. One possibility for such a class is as follows:
+enables the **second step**: reinterpreting mask assignment and memory value assignment so that bitmasking intervenes. Since we now have lines like `mem.mask = …` and `mem[…] = …` in the (transformed) code, it is natural to endow `mem` with these capabilities by making it an instance of an ad hoc class. One possibility for such a class is as follows:
 
 
 ```python
 class Memory(Dict[int, int]):
     """Memory as a dictionary of address-value pairs."""
     
-    @classmethod
-    def write(cls, registers, code: str):
-        """Write to memory by running code."""
-        cls._registers = registers
-        mem = cls()  # Must be named "mem"
+    def __init__(mem, code):
+        """Initialize memory by running (transformed) code."""
         exec(code)
-        return mem
-
-    def _registers(self, addr: int, val: int) -> Iterator[Tuple[int, int]]:
-        """Generate address-value pairs to write."""
     
-    def _setmask(self, val: str):
+    def _setmask(self, val):
         self._mask = self._int("1" if x == "X" else "0" for x in val)
         self._places = [i for i, x in enumerate(reversed(val)) if x == "X"]
         self._overwrite = self._int("0" if x == "X" else x for x in val)
-
-    @staticmethod
-    def _int(x: str) -> int:
-        return int("".join(x), 2)
     
     mask = property(fset=_setmask)
+    
+    @staticmethod
+    def _int(x):
+        return int("".join(x), 2)
 
-    def __setitem__(self, addr: int, val: int):
+    def __setitem__(self, addr, val):
         """Write values to memory."""
         for a, v in self._registers(addr, val):
             super().__setitem__(a, v)
+    
+    def _registers(self, addr, val):
+        """Generate address-value pairs to write; assign dynamically."""
         
-    def __iter__(self) -> Iterator[int]:
+    def __iter__(self):
         return iter(super().values())
 ```
 
-The method `Memory._registers()` is *dynamically* assigned by the constructor `Memory.write()`. For Part 1, it maskes memory values; for Part 2, it masks many memory addresses.
+For Part 1, the `_registers()` method maskes memory values; for Part 2, it masks many memory addresses.
 
 
 ```python
-def registers1(self, addr: int, val: int) -> Iterator[Tuple[int, int]]:
+class Part1(Memory):
     """Apply bitmask to memory values."""
-    yield addr, (val & self._mask) | self._overwrite
+    
+    def _registers(self, addr, val):
+        yield addr, (val & self._mask) | self._overwrite
 
-def registers2(self, addr: int, val: int) -> Iterator[Tuple[int, int]]:
+class Part2(Memory):
     """Decode memory addresses."""
-    addr = (addr | self._overwrite) & (BITS36 ^ self._mask)
-    for bits in it.product((0, 1), repeat=len(self._places)):
-        yield addr | sum(map(op.lshift, bits, self._places)), val
 
-BITS36 = 2**36 - 1
+    def _registers(self, addr, val):
+        addr = (addr | self._overwrite) & (self.BITS36 ^ self._mask)
+        for bits in it.product((0, 1), repeat=len(self._places)):
+            yield addr | sum(map(op.lshift, bits, self._places)), val
+
+    BITS36 = 2**36 - 1
 ```
 
 We can now solve both parts by **literal interpretation**. For **Part 1**, the sum of all values left in memory after the code runs is **`7817357407588`**.
 
 
 ```python
-assert 7817357407588 == sum(Memory.write(registers1, code))
+assert 7817357407588 == sum(Part1(code))
 ```
 
 For **Part 2**, the sum of all values left in memory after the code runs is **`4335927555692`**.
 
 
 ```python
-assert 4335927555692 == sum(Memory.write(registers2, code))
+assert 4335927555692 == sum(Part2(code))
 ```
 
 <a id='day18'></a>
